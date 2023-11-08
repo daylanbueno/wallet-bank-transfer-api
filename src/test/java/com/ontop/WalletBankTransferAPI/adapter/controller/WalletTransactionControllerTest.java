@@ -1,8 +1,7 @@
-package com.ontop.WalletBankTransferAPI.adapter;
+package com.ontop.WalletBankTransferAPI.adapter.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ontop.WalletBankTransferAPI.adapter.controller.WalletTransactionController;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoTransfer;
 import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
 import com.ontop.WalletBankTransferAPI.domain.services.WalletService;

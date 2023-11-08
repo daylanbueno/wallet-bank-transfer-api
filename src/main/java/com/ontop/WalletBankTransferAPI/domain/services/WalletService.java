@@ -63,7 +63,7 @@ public class WalletService implements InboutWalletTransactonPor {
         BigDecimal amount = walletTransaction.getAmount();
 
         // Calculate the fee
-        BigDecimal feeAmount = amount.multiply(BigDecimal.valueOf(percentage)).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+        BigDecimal feeAmount = amount.multiply(BigDecimal.valueOf(percentage)).divide(BigDecimal.valueOf(100));
 
         // Set the fee amount in the transaction
         walletTransaction.setFeeAmount(feeAmount);
