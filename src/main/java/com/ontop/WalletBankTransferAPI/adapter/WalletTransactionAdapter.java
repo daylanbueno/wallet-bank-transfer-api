@@ -80,7 +80,7 @@ public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
                                 .routingNumber("211927207")
                                 .build())
                         .build())
-                .amount(BigDecimal.valueOf(1000.0))
+                .amount(amount)
                 .build();
     }
 
