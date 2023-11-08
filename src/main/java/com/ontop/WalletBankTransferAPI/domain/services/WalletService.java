@@ -40,12 +40,12 @@ public class WalletService implements InboutWalletTransactonPor {
 
         if (paymentInfo == null) {
             walletTrasaction.setStatus(TransactionStatus.FAILED);
-            walletTransaction.setPaymentId(paymentInfo.getId());
             outbountWalletTransactionPor.registerTransaction(walletTrasaction);
             throw new BusinessException("Payment failed");
         }
 
         walletTrasaction.setStatus(TransactionStatus.COMPLETED);
+        walletTransaction.setPaymentId(paymentInfo.getId());
         outbountWalletTransactionPor.registerTransaction(walletTrasaction);
 
         return walletTrasaction;

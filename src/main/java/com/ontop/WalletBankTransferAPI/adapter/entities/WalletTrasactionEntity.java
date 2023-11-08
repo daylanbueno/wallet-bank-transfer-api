@@ -24,6 +24,6 @@ public class WalletTrasactionEntity {
     private LocalDateTime dateTime;
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
-    private Integer paymentId;
+    private String paymentId;
 
 }

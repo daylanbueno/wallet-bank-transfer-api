@@ -10,6 +10,7 @@ import com.ontop.WalletBankTransferAPI.domain.Payment;
 import com.ontop.WalletBankTransferAPI.domain.Wallet;
 import com.ontop.WalletBankTransferAPI.domain.WalletTrasaction;
 import com.ontop.WalletBankTransferAPI.domain.ports.OutbountWalletTransactionPor;
+import com.ontop.WalletBankTransferAPI.util.Mocks;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,7 @@ public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
 
     @Override
     public Payment registerPayment(Integer userId, BigDecimal amount) {
-        var paymentRequest = mockPaymentRequest(amount);
+        var paymentRequest = Mocks.createMock(userId,amount);
         try {
             DtoPeymentResponse dtoPeymentResponse = ontopExternalService.creastePayment(paymentRequest);
             return new Payment(dtoPeymentResponse.getPaymentInfo().getId(),
