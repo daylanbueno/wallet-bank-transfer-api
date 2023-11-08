@@ -5,7 +5,7 @@ import com.ontop.WalletBankTransferAPI.domain.enums.TransactionStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class WalletTransaction {
+public class WalletTransactionDomain {
 
     private Integer walletTransactionId;
     private Integer userId;
@@ -13,12 +13,12 @@ public class WalletTransaction {
     private LocalDateTime dateTime;
     private TransactionStatus status;
     private String paymentId;
-    private BigDecimal totalFee;
+    private BigDecimal feeAmount;
 
-    public WalletTransaction() {
+    public WalletTransactionDomain() {
     }
 
-    public WalletTransaction(Integer id, Integer userId, BigDecimal amount, LocalDateTime dateTime, TransactionStatus status) {
+    public WalletTransactionDomain(Integer id, Integer userId, BigDecimal amount, LocalDateTime dateTime, TransactionStatus status) {
         this.walletTransactionId = id;
         this.userId =  userId;
         this.amount = amount;
@@ -26,7 +26,7 @@ public class WalletTransaction {
         this.status = status;
     }
 
-    public WalletTransaction(Integer userId, BigDecimal amount) {
+    public WalletTransactionDomain(Integer userId, BigDecimal amount) {
         this.userId = userId;
         this.amount = amount;
     }
@@ -78,11 +78,11 @@ public class WalletTransaction {
         this.paymentId = paymentId;
     }
 
-    public BigDecimal getTotalFee() {
-        return totalFee;
+    public BigDecimal getFeeAmount() {
+        return feeAmount;
     }
 
-    public void setTotalFee(BigDecimal totalFee) {
-        this.totalFee = totalFee;
+    public void setFeeAmount(BigDecimal feeAmount) {
+        this.feeAmount = feeAmount;
     }
 }

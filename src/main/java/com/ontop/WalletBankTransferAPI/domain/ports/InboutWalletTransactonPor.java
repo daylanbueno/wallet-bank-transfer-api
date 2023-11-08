@@ -1,10 +1,10 @@
 package com.ontop.WalletBankTransferAPI.domain.ports;
 
-import com.ontop.WalletBankTransferAPI.domain.WalletTransaction;
+import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
 
 import java.math.BigDecimal;
 
 public interface InboutWalletTransactonPor {
-     WalletTransaction execute(Integer userId, BigDecimal amount);
+     WalletTransactionDomain execute(Integer userId, BigDecimal amount);
 
 }

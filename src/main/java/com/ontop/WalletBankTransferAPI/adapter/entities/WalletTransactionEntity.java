@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WalletTransaction {
+public class WalletTransactionEntity {
     @Id
     @Column(name = "id")
     private Integer walletTransactionId;

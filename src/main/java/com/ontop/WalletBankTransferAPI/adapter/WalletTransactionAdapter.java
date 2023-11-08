@@ -3,11 +3,12 @@ package com.ontop.WalletBankTransferAPI.adapter;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPaymentRequest;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPeymentResponse;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoTransaction;
-import com.ontop.WalletBankTransferAPI.adapter.entities.WalletTransaction;
+import com.ontop.WalletBankTransferAPI.adapter.entities.WalletTransactionEntity;
 import com.ontop.WalletBankTransferAPI.adapter.external.OntopExternalService;
 import com.ontop.WalletBankTransferAPI.adapter.repositories.WalletTransactionRepository;
 import com.ontop.WalletBankTransferAPI.domain.Payment;
 import com.ontop.WalletBankTransferAPI.domain.Wallet;
+import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
 import com.ontop.WalletBankTransferAPI.domain.ports.OutbountWalletTransactionPor;
 import com.ontop.WalletBankTransferAPI.util.Mocks;
 import lombok.AllArgsConstructor;
@@ -27,17 +28,17 @@ public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
 
     private final ModelMapper  modelMapper;
 
-    public com.ontop.WalletBankTransferAPI.domain.WalletTransaction createExternalTransaction(com.ontop.WalletBankTransferAPI.domain.WalletTransaction walletTrasaction) {
+    public WalletTransactionDomain createExternalTransaction(WalletTransactionDomain walletTrasaction) {
         var dtoTransaction = modelMapper.map(walletTrasaction, DtoTransaction.class);
         DtoTransaction transaction = ontopExternalService.createTransaction(dtoTransaction);
-        return modelMapper.map(transaction, com.ontop.WalletBankTransferAPI.domain.WalletTransaction.class);
+        return modelMapper.map(transaction, WalletTransactionDomain.class);
     }
 
     @Override
-    public com.ontop.WalletBankTransferAPI.domain.WalletTransaction registerTransaction(com.ontop.WalletBankTransferAPI.domain.WalletTransaction walletTrasaction) {
-        WalletTransaction entity = modelMapper.map(walletTrasaction, WalletTransaction.class);
-        WalletTransaction saved = walletTransactionRepository.save(entity);
-        return modelMapper.map(saved, com.ontop.WalletBankTransferAPI.domain.WalletTransaction.class);
+    public WalletTransactionDomain registerTransaction(WalletTransactionDomain walletTrasaction) {
+        WalletTransactionEntity entity = modelMapper.map(walletTrasaction, WalletTransactionEntity.class);
+        WalletTransactionEntity saved = walletTransactionRepository.save(entity);
+        return modelMapper.map(saved, WalletTransactionDomain.class);
     }
 
     @Override
