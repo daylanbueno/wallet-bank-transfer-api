@@ -10,10 +10,9 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoBalance {
+public class DtoWallet {
 
-    @JsonProperty("balance")
-    private BigDecimal total;
+    private BigDecimal balance;
 
     @JsonProperty("user_id")
     private Integer userId;

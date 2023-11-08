@@ -1,10 +1,10 @@
 package com.ontop.WalletBankTransferAPI.adapter.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
-@AllArgsConstructor
 public class DtoPeymentResponse {
     private RequestInfo requestInfo;
     private PaymentInfo paymentInfo;
@@ -16,7 +16,7 @@ public class DtoPeymentResponse {
 
     @Data
     public class PaymentInfo {
-        private double amount;
+        private BigDecimal amount;
         private String id;
     }
 }
