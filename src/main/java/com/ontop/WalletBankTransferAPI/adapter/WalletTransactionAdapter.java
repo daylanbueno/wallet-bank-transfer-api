@@ -60,29 +60,5 @@ public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
             return null;
         }
     }
-    private DtoPaymentRequest mockPaymentRequest(BigDecimal amount) {
-       return  DtoPaymentRequest.builder()
-                .source(DtoPaymentRequest.Source.builder()
-                        .type("COMPANY")
-                        .sourceInformation(DtoPaymentRequest.SourceInformation.builder()
-                                .name("ONTOP INC")
-                                .build())
-                        .account(DtoPaymentRequest.Account.builder()
-                                .accountNumber("0245253419")
-                                .currency("USD")
-                                .routingNumber("028444018")
-                                .build())
-                        .build())
-                .destination(DtoPaymentRequest.Destination.builder()
-                        .name("TONY STARK")
-                        .account(DtoPaymentRequest.Account.builder()
-                                .accountNumber("1885226711")
-                                .currency("USD")
-                                .routingNumber("211927207")
-                                .build())
-                        .build())
-                .amount(amount)
-                .build();
-    }
 
 }
