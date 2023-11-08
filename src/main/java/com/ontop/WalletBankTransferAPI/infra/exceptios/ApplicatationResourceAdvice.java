@@ -13,4 +13,17 @@ public class ApplicatationResourceAdvice {
     public ApiError handleBusinessException(BusinessException ex) {
         return new ApiError(ex.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleIllegalArgumentException(IllegalArgumentException ex) {
+        return new ApiError(ex.getMessage());
+    }
+
+    @ExceptionHandler(ExternalErrorException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiError handleExternalErrorException(ExternalErrorException ex) {
+        return new ApiError(ex.getMessage());
+    }
+
 }

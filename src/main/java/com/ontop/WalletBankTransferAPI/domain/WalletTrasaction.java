@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class WalletTrasaction {
+
     private Integer walletTransactionId;
     private Integer userId;
     private BigDecimal amount;
@@ -33,6 +34,17 @@ public class WalletTrasaction {
         return walletTransactionId;
     }
 
+    public void setWalletTransactionId(Integer walletTransactionId) {
+        this.walletTransactionId = walletTransactionId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public BigDecimal getAmount() {
         return amount;
@@ -54,27 +66,15 @@ public class WalletTrasaction {
         return status;
     }
 
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
     public String getPaymentId() {
         return paymentId;
     }
 
-    public void setWalletTransactionId(Integer walletTransactionId) {
-        this.walletTransactionId = walletTransactionId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
     }
 }

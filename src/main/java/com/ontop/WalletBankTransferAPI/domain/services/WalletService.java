@@ -21,6 +21,10 @@ public class WalletService implements InboutWalletTransactonPor {
     @Override
     public WalletTrasaction execute(Integer userId, BigDecimal amount) {
 
+        if (userId == null || amount == null) {
+            throw new IllegalArgumentException("amount and user_id must not be null");
+        }
+
         var walletBalance = outbountWalletTransactionPor.findBalance(userId);
 
         if (walletBalance.getBalance().compareTo(amount) < 0 ) {
