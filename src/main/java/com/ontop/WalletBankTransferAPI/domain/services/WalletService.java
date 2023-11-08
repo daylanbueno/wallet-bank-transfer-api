@@ -1,7 +1,7 @@
 package com.ontop.WalletBankTransferAPI.domain.services;
 
 import com.ontop.WalletBankTransferAPI.domain.Payment;
-import com.ontop.WalletBankTransferAPI.domain.WalletTrasaction;
+import com.ontop.WalletBankTransferAPI.domain.WalletTransaction;
 import com.ontop.WalletBankTransferAPI.domain.enums.TransactionStatus;
 import com.ontop.WalletBankTransferAPI.domain.exeptions.BusinessException;
 import com.ontop.WalletBankTransferAPI.domain.ports.InboutWalletTransactonPor;
@@ -19,7 +19,7 @@ public class WalletService implements InboutWalletTransactonPor {
     }
 
     @Override
-    public WalletTrasaction execute(Integer userId, BigDecimal amount) {
+    public WalletTransaction execute(Integer userId, BigDecimal amount) {
 
         if (userId == null || amount == null) {
             throw new IllegalArgumentException("amount and user_id must not be null");
@@ -31,29 +31,45 @@ public class WalletService implements InboutWalletTransactonPor {
             throw new BusinessException("Balance is not enough");
         }
 
-        var walletTransaction = outbountWalletTransactionPor
-                .createExternalTransaction(new WalletTrasaction(userId, amount));
+        var externalWalletTransaction = outbountWalletTransactionPor
+                .createExternalTransaction(new WalletTransaction(userId, amount));
 
-        WalletTrasaction walletTrasaction = registerNewTransaction(walletTransaction);
+        WalletTransaction registredWalletTransaction = registerPendingTransaction(externalWalletTransaction);
 
         Payment paymentInfo = outbountWalletTransactionPor.registerPayment(userId, amount);
 
         if (paymentInfo == null) {
-            walletTrasaction.setStatus(TransactionStatus.FAILED);
-            outbountWalletTransactionPor.registerTransaction(walletTrasaction);
+            registredWalletTransaction.setStatus(TransactionStatus.FAILED);
+            outbountWalletTransactionPor.registerTransaction(registredWalletTransaction);
             throw new BusinessException("Payment failed");
         }
 
-        walletTrasaction.setStatus(TransactionStatus.COMPLETED);
-        walletTransaction.setPaymentId(paymentInfo.getId());
-        outbountWalletTransactionPor.registerTransaction(walletTrasaction);
+        applyTaxe(registredWalletTransaction);
 
-        return walletTrasaction;
+        completeTransaction(registredWalletTransaction, paymentInfo);
+
+        return registredWalletTransaction;
     }
 
-    private WalletTrasaction registerNewTransaction(WalletTrasaction pedenteTransaction) {
+    private void completeTransaction(WalletTransaction registredWalletTransaction, Payment paymentInfo) {
+        registredWalletTransaction.setStatus(TransactionStatus.COMPLETED);
+        registredWalletTransaction.setPaymentId(paymentInfo.getId());
+        outbountWalletTransactionPor.registerTransaction(registredWalletTransaction);
+    }
+
+    private static void applyTaxe(WalletTransaction walletTrasaction) {
+        int percetage = 10;
+        var amount  = walletTrasaction.getAmount();
+        BigDecimal amountFree  = amount.multiply(BigDecimal.valueOf(percetage)).divide(BigDecimal.valueOf(100));
+
+        walletTrasaction.setTotalFee(amountFree);
+
+        walletTrasaction.setAmount(amount.subtract(amountFree));
+    }
+
+    private WalletTransaction registerPendingTransaction(WalletTransaction pedenteTransaction) {
         return outbountWalletTransactionPor
                 .registerTransaction(
-                        new WalletTrasaction(pedenteTransaction.getWalletTransactionId(), pedenteTransaction.getUserId(),pedenteTransaction.getAmount(), LocalDateTime.now(), TransactionStatus.PENDING));
+                        new WalletTransaction(pedenteTransaction.getWalletTransactionId(), pedenteTransaction.getUserId(),pedenteTransaction.getAmount(), LocalDateTime.now(), TransactionStatus.PENDING));
     }
 }

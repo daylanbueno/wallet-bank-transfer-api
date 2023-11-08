@@ -2,14 +2,14 @@ package com.ontop.WalletBankTransferAPI.domain.ports;
 
 import com.ontop.WalletBankTransferAPI.domain.Payment;
 import com.ontop.WalletBankTransferAPI.domain.Wallet;
-import com.ontop.WalletBankTransferAPI.domain.WalletTrasaction;
+import com.ontop.WalletBankTransferAPI.domain.WalletTransaction;
 
 import java.math.BigDecimal;
 
 public interface OutbountWalletTransactionPor {
-    WalletTrasaction createExternalTransaction(WalletTrasaction walletTrasaction);
+    WalletTransaction createExternalTransaction(WalletTransaction walletTrasaction);
 
-    WalletTrasaction registerTransaction(WalletTrasaction walletTrasaction);
+    WalletTransaction registerTransaction(WalletTransaction walletTrasaction);
 
     Wallet findBalance(Integer userId);
 
