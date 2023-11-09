@@ -1,7 +1,6 @@
-package com.ontop.WalletBankTransferAPI.adapter.entities;
+package com.ontop.WalletBankTransferAPI.adapter.dto;
 
 import com.ontop.WalletBankTransferAPI.domain.enums.TransactionStatus;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,20 +8,14 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-
-@Entity(name = "tb_transaction")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class WalletTransactionEntity {
-    @Id
-    @Column(name = "id")
+@NoArgsConstructor
+public class DtoWalletTransaction {
     private Integer walletTransactionId;
     private Integer userId;
     private BigDecimal amount;
     private LocalDateTime dateTime;
-    @Enumerated(EnumType.STRING)
     private TransactionStatus status;
-    private String paymentId;
-    private BigDecimal totalFee;
+    private BigDecimal feeAmount;
 }

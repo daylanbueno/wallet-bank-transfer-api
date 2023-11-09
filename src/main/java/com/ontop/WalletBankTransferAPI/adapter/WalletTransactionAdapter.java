@@ -1,7 +1,6 @@
 package com.ontop.WalletBankTransferAPI.adapter;
 
-import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPaymentRequest;
-import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPeymentResponse;
+import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPaymentResponse;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoTransaction;
 import com.ontop.WalletBankTransferAPI.adapter.entities.WalletTransactionEntity;
 import com.ontop.WalletBankTransferAPI.adapter.external.OntopExternalService;
@@ -9,17 +8,18 @@ import com.ontop.WalletBankTransferAPI.adapter.repositories.WalletTransactionRep
 import com.ontop.WalletBankTransferAPI.domain.Payment;
 import com.ontop.WalletBankTransferAPI.domain.Wallet;
 import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
-import com.ontop.WalletBankTransferAPI.domain.ports.OutbountWalletTransactionPor;
+import com.ontop.WalletBankTransferAPI.domain.ports.OutboundWalletTransactionPort;
 import com.ontop.WalletBankTransferAPI.util.Mocks;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
+public class WalletTransactionAdapter implements OutboundWalletTransactionPort {
 
 
     private final WalletTransactionRepository walletTransactionRepository;
@@ -48,16 +48,16 @@ public class WalletTransactionAdapter implements OutbountWalletTransactionPor {
     }
 
     @Override
-    public Payment registerPayment(Integer userId, BigDecimal amount) {
+    public Optional<Payment> registerPayment(Integer userId, BigDecimal amount) {
         var paymentRequest = Mocks.createMock(userId,amount);
         try {
-            DtoPeymentResponse dtoPeymentResponse = ontopExternalService.creastePayment(paymentRequest);
-            return new Payment(dtoPeymentResponse.getPaymentInfo().getId(),
+            DtoPaymentResponse dtoPeymentResponse = ontopExternalService.createPayment(paymentRequest);
+            return Optional.of(new Payment(dtoPeymentResponse.getPaymentInfo().getId(),
                     dtoPeymentResponse.getRequestInfo().getStatus(),
-                    dtoPeymentResponse.getPaymentInfo().getAmount());
+                    dtoPeymentResponse.getPaymentInfo().getAmount()));
 
         } catch (Exception exception) {
-            return null;
+            return Optional.empty();
         }
     }
 

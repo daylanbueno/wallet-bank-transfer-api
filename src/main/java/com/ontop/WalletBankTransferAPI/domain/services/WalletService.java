@@ -4,19 +4,19 @@ import com.ontop.WalletBankTransferAPI.domain.Payment;
 import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
 import com.ontop.WalletBankTransferAPI.domain.enums.TransactionStatus;
 import com.ontop.WalletBankTransferAPI.domain.exeptions.BusinessException;
-import com.ontop.WalletBankTransferAPI.domain.ports.InboutWalletTransactonPor;
-import com.ontop.WalletBankTransferAPI.domain.ports.OutbountWalletTransactionPor;
+import com.ontop.WalletBankTransferAPI.domain.ports.InboundWalletTransactonPort;
+import com.ontop.WalletBankTransferAPI.domain.ports.OutboundWalletTransactionPort;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-public class WalletService implements InboutWalletTransactonPor {
+public class WalletService implements InboundWalletTransactonPort {
 
-    private final OutbountWalletTransactionPor outbountWalletTransactionPor;
+    private final OutboundWalletTransactionPort outbountWalletTransactionPort;
 
-    public WalletService(OutbountWalletTransactionPor externalWalletPort) {
-        this.outbountWalletTransactionPor = externalWalletPort;
+    public WalletService(OutboundWalletTransactionPort externalWalletPort) {
+        this.outbountWalletTransactionPort = externalWalletPort;
     }
 
     @Override
@@ -26,28 +26,28 @@ public class WalletService implements InboutWalletTransactonPor {
             throw new IllegalArgumentException("amount and user_id must not be null");
         }
 
-        var walletBalance = outbountWalletTransactionPor.findBalance(userId);
+        var walletBalance = outbountWalletTransactionPort.findBalance(userId);
 
         if (walletBalance.getBalance().compareTo(amount) < 0 ) {
             throw new BusinessException("Balance is not enough");
         }
 
-        var externalWalletTransaction = outbountWalletTransactionPor
+        var externalWalletTransaction = outbountWalletTransactionPort
                 .createExternalTransaction(new WalletTransactionDomain(userId, amount));
 
         WalletTransactionDomain registredWalletTransaction = registerPendingTransaction(externalWalletTransaction);
 
-        Payment paymentInfo = outbountWalletTransactionPor.registerPayment(userId, amount);
+        Optional<Payment> paymentInfo = outbountWalletTransactionPort.registerPayment(userId, amount);
 
-        if (paymentInfo == null) {
+        if (paymentInfo.isEmpty()) {
             registredWalletTransaction.setStatus(TransactionStatus.FAILED);
-            outbountWalletTransactionPor.registerTransaction(registredWalletTransaction);
+            outbountWalletTransactionPort.registerTransaction(registredWalletTransaction);
             throw new BusinessException("Payment failed");
         }
 
         applyFeeAmount(registredWalletTransaction);
 
-        completeTransaction(registredWalletTransaction, paymentInfo);
+        completeTransaction(registredWalletTransaction, paymentInfo.get());
 
         return registredWalletTransaction;
     }
@@ -55,7 +55,7 @@ public class WalletService implements InboutWalletTransactonPor {
     private void completeTransaction(WalletTransactionDomain registredWalletTransaction, Payment paymentInfo) {
         registredWalletTransaction.setStatus(TransactionStatus.COMPLETED);
         registredWalletTransaction.setPaymentId(paymentInfo.getId());
-        outbountWalletTransactionPor.registerTransaction(registredWalletTransaction);
+        outbountWalletTransactionPort.registerTransaction(registredWalletTransaction);
     }
 
     private static void applyFeeAmount(WalletTransactionDomain walletTransaction) {
@@ -74,7 +74,7 @@ public class WalletService implements InboutWalletTransactonPor {
     }
 
     private WalletTransactionDomain registerPendingTransaction(WalletTransactionDomain pedenteTransaction) {
-        return outbountWalletTransactionPor
+        return outbountWalletTransactionPort
                 .registerTransaction(
                         new WalletTransactionDomain(pedenteTransaction.getWalletTransactionId(), pedenteTransaction.getUserId(),pedenteTransaction.getAmount(), LocalDateTime.now(), TransactionStatus.PENDING));
     }

@@ -4,10 +4,11 @@ package com.ontop.WalletBankTransferAPI.adapter.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoTransfer;
 import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
-import com.ontop.WalletBankTransferAPI.domain.services.WalletService;
+import com.ontop.WalletBankTransferAPI.domain.ports.InboundWalletTransactonPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,14 +30,17 @@ public class WalletTransactionControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private WalletService walletService;
+    private InboundWalletTransactonPort inboundWalletTransactonPort;
+
+    @MockBean
+    private ModelMapper modelMapper;
 
     @Test
     public void shouldExecuteTransferenceCuccessfully() throws Exception {
 
         DtoTransfer dtoTransfer = DtoTransfer.builder().userId(1000).amount(BigDecimal.valueOf(2000)).build();
 
-        Mockito.when(walletService.execute(dtoTransfer.getUserId(), dtoTransfer.getAmount()))
+        Mockito.when(inboundWalletTransactonPort.execute(dtoTransfer.getUserId(), dtoTransfer.getAmount()))
                 .thenReturn(new WalletTransactionDomain());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/wallets/wallet-to-bank/transfer")

@@ -1,7 +1,7 @@
 package com.ontop.WalletBankTransferAPI.adapter.external;
 
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoWallet;
-import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPeymentResponse;
+import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPaymentResponse;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoTransaction;
 import com.ontop.WalletBankTransferAPI.adapter.dto.DtoPaymentRequest;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,5 +19,5 @@ public interface OntopExternalService {
     DtoTransaction createTransaction(@RequestBody DtoTransaction dtoTransaction);
 
     @PostMapping(value = "/api/v1/payments")
-    DtoPeymentResponse creastePayment(@RequestBody DtoPaymentRequest externalTransactionDTO);
+    DtoPaymentResponse createPayment(@RequestBody DtoPaymentRequest externalTransactionDTO);
 }

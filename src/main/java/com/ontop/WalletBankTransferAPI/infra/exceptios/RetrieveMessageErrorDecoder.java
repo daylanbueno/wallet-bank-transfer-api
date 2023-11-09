@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
 
-public class RetreiveMessageErrorDecoder  implements ErrorDecoder {
+public class RetrieveMessageErrorDecoder implements ErrorDecoder {
     private final ErrorDecoder defaultErrorDecoder = new Default();
     private final ObjectMapper objectMapper = new ObjectMapper();
     @SneakyThrows

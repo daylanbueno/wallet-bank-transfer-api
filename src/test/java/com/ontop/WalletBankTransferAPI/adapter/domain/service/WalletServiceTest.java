@@ -5,7 +5,8 @@ import com.ontop.WalletBankTransferAPI.domain.Wallet;
 import com.ontop.WalletBankTransferAPI.domain.WalletTransactionDomain;
 import com.ontop.WalletBankTransferAPI.domain.enums.TransactionStatus;
 import com.ontop.WalletBankTransferAPI.domain.exeptions.BusinessException;
-import com.ontop.WalletBankTransferAPI.domain.ports.OutbountWalletTransactionPor;
+import com.ontop.WalletBankTransferAPI.domain.ports.InboundWalletTransactonPort;
+import com.ontop.WalletBankTransferAPI.domain.ports.OutboundWalletTransactionPort;
 import com.ontop.WalletBankTransferAPI.domain.services.WalletService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,26 +19,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 public class WalletServiceTest {
 
-    private WalletService walletService;
+    private InboundWalletTransactonPort inboundWalletTransactonPort;
 
     @MockBean
-    private OutbountWalletTransactionPor outbountWalletTransactionPor;
+    private OutboundWalletTransactionPort outbountWalletTransactionPort;
     @BeforeEach
     public void setUp() {
-        this.walletService = new  WalletService(outbountWalletTransactionPor);
+        this.inboundWalletTransactonPort = new  WalletService(outbountWalletTransactionPort);
     }
 
     @Test
     @DisplayName("should fail when amount is null")
     public void shouldFailWhenAmountIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.execute(1000, null);
+            inboundWalletTransactonPort.execute(1000, null);
         });
     }
 
@@ -45,7 +47,7 @@ public class WalletServiceTest {
     @DisplayName("should fail when userId is null")
     public void shouldFailWhenUserIdIsNull() {
         assertThrows(IllegalArgumentException.class, () -> {
-            walletService.execute(null, BigDecimal.valueOf(1000));
+            inboundWalletTransactonPort.execute(null, BigDecimal.valueOf(1000));
         });
     }
 
@@ -55,10 +57,10 @@ public class WalletServiceTest {
 
         Wallet wallet = new Wallet(BigDecimal.valueOf( 500), 1000);
 
-        Mockito.when(outbountWalletTransactionPor.findBalance(Mockito.anyInt())).thenReturn(wallet);
+        Mockito.when(outbountWalletTransactionPort.findBalance(Mockito.anyInt())).thenReturn(wallet);
 
         assertThrows(BusinessException.class, () -> {
-            walletService.execute(1000, BigDecimal.valueOf(1000));
+            inboundWalletTransactonPort.execute(1000, BigDecimal.valueOf(1000));
         });
     }
 
@@ -75,16 +77,16 @@ public class WalletServiceTest {
         WalletTransactionDomain internalwalletTransactionDomain =
                 new WalletTransactionDomain( 2019,1000,BigDecimal.valueOf( 2000), LocalDateTime.now(), TransactionStatus.PENDING);
 
-        Mockito.when(outbountWalletTransactionPor.findBalance(Mockito.anyInt())).thenReturn(wallet);
+        Mockito.when(outbountWalletTransactionPort.findBalance(Mockito.anyInt())).thenReturn(wallet);
 
-        Mockito.when(outbountWalletTransactionPor.createExternalTransaction(Mockito.any())).thenReturn(externalWallet);
+        Mockito.when(outbountWalletTransactionPort.createExternalTransaction(Mockito.any())).thenReturn(externalWallet);
 
-        Mockito.when(outbountWalletTransactionPor.registerTransaction(Mockito.any())).thenReturn(internalwalletTransactionDomain);
+        Mockito.when(outbountWalletTransactionPort.registerTransaction(Mockito.any())).thenReturn(internalwalletTransactionDomain);
 
-        Mockito.when(outbountWalletTransactionPor.registerPayment(Mockito.any(), Mockito.any())).thenReturn(null);
+        Mockito.when(outbountWalletTransactionPort.registerPayment(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
 
         assertThrows(BusinessException.class, () -> {
-            walletService.execute(1000, BigDecimal.valueOf(1000));
+            inboundWalletTransactonPort.execute(1000, BigDecimal.valueOf(1000));
         });
     }
 
@@ -103,15 +105,15 @@ public class WalletServiceTest {
 
         Payment payment = new Payment("70cfe468-91b9-4e04-8910-5e8257dfadfa", "Processing",BigDecimal.valueOf(2000));
 
-        Mockito.when(outbountWalletTransactionPor.findBalance(Mockito.anyInt())).thenReturn(wallet);
+        Mockito.when(outbountWalletTransactionPort.findBalance(Mockito.anyInt())).thenReturn(wallet);
 
-        Mockito.when(outbountWalletTransactionPor.createExternalTransaction(Mockito.any())).thenReturn(externalWallet);
+        Mockito.when(outbountWalletTransactionPort.createExternalTransaction(Mockito.any())).thenReturn(externalWallet);
 
-        Mockito.when(outbountWalletTransactionPor.registerTransaction(Mockito.any())).thenReturn(internalwalletTransactionDomain);
+        Mockito.when(outbountWalletTransactionPort.registerTransaction(Mockito.any())).thenReturn(internalwalletTransactionDomain);
 
-        Mockito.when(outbountWalletTransactionPor.registerPayment(Mockito.any(), Mockito.any())).thenReturn(payment);
+        Mockito.when(outbountWalletTransactionPort.registerPayment(Mockito.any(), Mockito.any())).thenReturn(Optional.of(payment));
 
-        WalletTransactionDomain transaction = walletService.execute(1000, BigDecimal.valueOf(2000));
+        WalletTransactionDomain transaction = inboundWalletTransactonPort.execute(1000, BigDecimal.valueOf(2000));
 
         Assertions.assertThat(transaction.getAmount()).isEqualTo(BigDecimal.valueOf(1800));
         Assertions.assertThat(transaction.getFeeAmount()).isEqualTo(BigDecimal.valueOf(200));
