@@ -12,6 +12,9 @@ The transaction must have:
 -  A fee of 10% is applied when the transaction is carried out.
 -  A status (we leave the decision of which statuses to use up to you).
 
+## This project was developed using hexagonal architecture.
+![image](https://github.com/daylanbueno/wallet-bank-transfer-api/assets/17939912/d972b8d1-f750-4ac2-a9b1-67b47f90c6c0)
+ 
 ## Technologies
 - Java 17
 - Spring boot 3.1.5
@@ -24,7 +27,7 @@ The transaction must have:
 - Git
 - Docker
 - docker-compose
- 
+  
 ## Requirements for execution
 - Java
 - Docker
