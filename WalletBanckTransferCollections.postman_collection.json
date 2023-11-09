@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "084ccc18-747d-4082-a620-70c745d16aa7",
+		"name": "WalletBanckTransferCollections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3433780"
+	},
+	"item": [
+		{
+			"name": "transfer-sucess",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 5002,\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-[obtained when user_id is 404]",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1000,\n    \"amount\": null\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer[obtained when user_id is 500]",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 402,\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-(obtained when user_id is 500)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 500,\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer - (with destination name JAMES FAILED)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 5001,\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer-(with destination name JAMES TIMEOUT)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 5002,\n    \"amount\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/wallets/wallet-to-bank/transfer",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"wallets",
+						"wallet-to-bank",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
