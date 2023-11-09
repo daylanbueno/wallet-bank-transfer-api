@@ -30,8 +30,6 @@ The transaction must have:
 - Docker
 - docker-compose
 
-
-
   ## How to run
   Once you have cloned the project
   
@@ -42,6 +40,10 @@ The transaction must have:
   - import collections
     ![import collections](https://github.com/daylanbueno/wallet-bank-transfer-api/assets/17939912/1eca203f-752a-4c58-b796-2b5536c78d1d)
 
+### To use Postman, you should configure the baseUrl environment variable to http://localhost:8080.
+
+### call API
+![how works](https://github.com/daylanbueno/wallet-bank-transfer-api/assets/17939912/de36480f-a1b4-4e69-8d02-cdef8b4a96b4)
 
 
   
