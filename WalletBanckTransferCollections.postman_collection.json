@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "084ccc18-747d-4082-a620-70c745d16aa7",
+		"_postman_id": "7d934cd7-b4f4-4daa-8b79-c9c7e70f76c1",
 		"name": "WalletBanckTransferCollections",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3433780"
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"userId\": 5002,\n    \"amount\": 1000\n}",
+					"raw": "{\n    \"userId\": 5000,\n    \"amount\": 1000\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -173,6 +173,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
 		}
 	]
 }
