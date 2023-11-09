@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  pdb:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=walletdb
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wallet-ontop
+    container_name: api
+    ports:
+      - "8080:8080"
+    environment:
+      - RDS_HOSTNAME=pdb
+      - RDS_PORT=5432
+      - RDS_USERNAME=postgres
+      - RDS_PASSWORD=admin
+      - PROFILE=prod
+    expose:
+      - 8080
+    volumes:
+      - ./target:/app
+volumes:
+  db_data:
